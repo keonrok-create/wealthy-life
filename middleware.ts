@@ -9,11 +9,15 @@ export async function middleware(request: NextRequest) {
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
       cookies: {
-        getAll() { return request.cookies.getAll(); },
-        setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value));
+        getAll() {
+          return request.cookies.getAll();
+        },
+        setAll(cookiesToSet: any) {
+          cookiesToSet.forEach(({ name, value }: any) =>
+            request.cookies.set(name, value)
+          );
           supabaseResponse = NextResponse.next({ request });
-          cookiesToSet.forEach(({ name, value, options }) =>
+          cookiesToSet.forEach(({ name, value, options }: any) =>
             supabaseResponse.cookies.set(name, value, options)
           );
         },
@@ -23,14 +27,15 @@ export async function middleware(request: NextRequest) {
 
   const { data: { user } } = await supabase.auth.getUser();
 
-  // Redirect unauthenticated users to login
-  const isPublicPath = request.nextUrl.pathname.startsWith("/auth");
+  const isPublicPath =
+    request.nextUrl.pathname.startsWith("/auth") ||
+    request.nextUrl.pathname === "/";
+
   if (!user && !isPublicPath) {
     return NextResponse.redirect(new URL("/auth/login", request.url));
   }
 
-  // Redirect logged-in users away from auth pages
-  if (user && isPublicPath) {
+  if (user && request.nextUrl.pathname.startsWith("/auth")) {
     return NextResponse.redirect(new URL("/dashboard", request.url));
   }
 
@@ -38,5 +43,7 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/((?!_next/static|_next/image|favicon.ico|icons|manifest.json|sw.js|workbox-.*).*)"],
+  matcher: [
+    "/((?!_next/static|_next/image|favicon.ico|icons|manifest.json|sw.js|workbox-.*).*)",
+  ],
 };
