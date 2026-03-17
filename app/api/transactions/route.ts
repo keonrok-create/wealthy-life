@@ -3,11 +3,14 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
   const supabase = createClient();
-  const month = req.nextUrl.searchParams.get("month");
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
+  const month = req.nextUrl.searchParams.get("month");
   let query = supabase
     .from("transactions")
     .select("*")
+    .eq("user_id", user.id)
     .order("date", { ascending: false });
 
   if (month) {
@@ -24,16 +27,15 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   const supabase = createClient();
   const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const body = await req.json();
   const { type, amount, category, description, date } = body;
 
-  const userId = user?.id ?? "00000000-0000-0000-0000-000000000000";
-
   const { data, error } = await supabase
     .from("transactions")
     .insert({
-      user_id: userId,
+      user_id: user.id,
       type,
       amount: Number(amount),
       category,
