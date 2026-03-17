@@ -2,7 +2,6 @@
 import { useState, useEffect } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { Card, PageHeader, SectionTitle } from "@/components/ui";
-import AppLayout from "@/components/layout/AppLayout";
 import { useRouter } from "next/navigation";
 
 export default function SettingsPage() {
@@ -41,7 +40,7 @@ export default function SettingsPage() {
   }
 
   return (
-    <AppLayout>
+    <div>
       <PageHeader title="설정" subtitle="계정 및 앱 설정" />
       <div className="max-w-lg space-y-5">
         {/* Profile */}
@@ -102,6 +101,6 @@ export default function SettingsPage() {
           </button>
         </Card>
       </div>
-    </AppLayout>
+    </div>
   );
 }
