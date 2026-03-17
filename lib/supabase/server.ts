@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 
@@ -11,14 +12,10 @@ export function createClient() {
         getAll() {
           return cookieStore.getAll();
         },
-        setAll(cookiesToSet: {
-          name: string;
-          value: string;
-          options?: Record<string, unknown>;
-        }[]) {
+        setAll(cookiesToSet: any) {
           try {
-            cookiesToSet.forEach(({ name, value, options }) =>
-              cookieStore.set(name, value, options as any)
+            cookiesToSet.forEach((cookie: any) =>
+              cookieStore.set(cookie.name, cookie.value, cookie.options)
             );
           } catch {}
         },
