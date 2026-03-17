@@ -1,0 +1,82 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --gold: #C8A96E;
+  --gold-light: #e8d5b0;
+  --teal: #4A9B8E;
+  --coral: #E07B6A;
+  --navy-900: #0a0a14;
+  --navy-800: #0d0d1a;
+  --navy-700: #16162a;
+  --navy-600: #1a1a2e;
+  --navy-500: #1e1e2e;
+  --navy-400: #2a2a3e;
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: var(--navy-800); }
+::-webkit-scrollbar-thumb { background: var(--navy-400); border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: var(--gold); }
+
+/* Input autofill */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  -webkit-text-fill-color: var(--gold-light);
+  -webkit-box-shadow: 0 0 0px 1000px var(--navy-800) inset;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+/* Safe area insets for iOS PWA */
+.safe-top    { padding-top: env(safe-area-inset-top); }
+.safe-bottom { padding-bottom: env(safe-area-inset-bottom); }
+.safe-left   { padding-left: env(safe-area-inset-left); }
+.safe-right  { padding-right: env(safe-area-inset-right); }
+
+@layer components {
+  .card {
+    @apply bg-gradient-to-br from-navy-700 to-navy-600
+           border border-gold/10 rounded-2xl p-5
+           shadow-[0_4px_24px_rgba(0,0,0,0.3)];
+  }
+
+  .btn-primary {
+    @apply bg-gold text-navy-900 font-bold rounded-xl px-5 py-2.5
+           hover:bg-gold-light active:scale-95
+           transition-all duration-150 cursor-pointer;
+  }
+
+  .btn-ghost {
+    @apply bg-navy-700 text-navy-100 border border-navy-400 rounded-xl px-4 py-2.5
+           hover:border-gold/40 hover:text-gold-light
+           transition-all duration-150 cursor-pointer;
+  }
+
+  .input {
+    @apply w-full bg-navy-800 border border-navy-400 rounded-xl
+           px-4 py-2.5 text-gold-light text-sm
+           focus:outline-none focus:border-gold/60 focus:ring-1 focus:ring-gold/30
+           placeholder:text-navy-100 transition-colors;
+  }
+
+  .badge {
+    @apply text-xs font-bold px-2.5 py-0.5 rounded-full border;
+  }
+
+  .section-title {
+    @apply flex items-center gap-2 text-gold-light font-extrabold text-base mb-4;
+  }
+}
