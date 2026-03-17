@@ -37,7 +37,7 @@ export default function LoginPage() {
         setMessage("로그인 실패: " + error.message);
       } else if (data.session) {
         setMessage("로그인 성공! 이동 중...");
-        window.location.href = "/dashboard";
+        window.location.replace("https://wealthy-life.vercel.app/dashboard");
       }
     }
     setLoading(false);
